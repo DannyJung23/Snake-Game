@@ -40,6 +40,7 @@ class Snake {
 
 class Apple {
     constructor() {
+        console.log("apple")
         var isTouching;
         while(true) {
             isTouching = false;
@@ -50,11 +51,12 @@ class Apple {
                     isTouching = true;
                 }
             }
+            console.log(this.x, this.y)
+            this.color = "red"
+            this.size = snake.size
             if(!isTouching) {
                 break;
             }
-            this.color = "pink"
-            this.size = snake.size
         }
     }
 }
@@ -86,6 +88,20 @@ function update() {
     console.log("update")
     snake.move()
     eatApple()
+    checkHitWall();
+}
+
+function checkHitWall() {
+    var headTail = snake.tail[snake.tail.length - 1]
+    if(headTail.x == -snake.size) {
+        headTail.x = canvas.width - snake.size
+    } else if(headTail.x == canvas.width) {
+        headTail.x = 0
+    } else if(headTail.y == -snake.size) {
+        headTail.y = canvas.height - snake.size
+    } else if(headTail.y == canvas.height) {
+        headTail.y = 0
+    }
 }
 
 function eatApple() {
@@ -106,7 +122,7 @@ function draw() {
 
     canvasContext.font = "20px Arial"
     canvasContext.fillStyle = "#00FF42"
-    canvasContext.fillText("Score: ", (snake.tail.length + 1), canvas.width - 120, 18);
+    canvasContext.fillText("Score: "+ (snake.tail.length - 1), canvas.width - 120, 18);
     createRect(apple.x, apple.y, apple.size, apple.size, apple.color)
 }
 
